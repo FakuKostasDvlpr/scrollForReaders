@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Mi primera extensión",
+  "version": "1.0",
+  "description": "Esta es mi primera extensión bla bla bla...",
+  "icons": {
+    "128": "read.png"
+  },
+  "action": {
+    "default_popup": "options.html"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["script.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
