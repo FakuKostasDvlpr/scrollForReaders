@@ -1,11 +1,29 @@
-let scrollingInterval;
+let isScrolling = false;
+let scrollingRequestId;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === 'startScrolling') {
-    scrollingInterval = setInterval(function() {
-      window.scrollBy(0, 10); // Ajusta el valor según tu preferencia
-    }, 100); // Ajusta la velocidad de desplazamiento
-  } else if (request.action === 'pauseScrolling') {
-    clearInterval(scrollingInterval);
+  if (request.action === 'startScrolling' && !isScrolling) {
+    startScrolling();
+  } else if (request.action === 'pauseScrolling' && isScrolling) {
+    stopScrolling();
   }
 });
+
+function startScrolling() {
+  isScrolling = true;
+  scrollLoop();
+}
+
+function stopScrolling() {
+  isScrolling = false;
+  cancelAnimationFrame(scrollingRequestId);
+}
+
+function scrollLoop() {
+  if (!isScrolling) {
+    return;
+  }
+
+  window.scrollBy(0, 1); // Ajusta la cantidad de desplazamiento según tu preferencia
+  scrollingRequestId = requestAnimationFrame(scrollLoop);
+}
